@@ -1,0 +1,14 @@
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+    prefix:   /playground
+    defaults: {_format: json}
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+
+
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
