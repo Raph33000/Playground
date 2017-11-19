@@ -46,11 +46,15 @@ class FriendsController extends FOSRestController
         }
         $friendList = $user->getMyFriends();
         $formattedArray = Array();
+        $friendSearch = $request->request->get("friendSearch");
         foreach ($friendList as $key => $friend) {
 
-            $formattedArray[$key]["id"] = $friend->getId();
-            $formattedArray[$key]["username"] = $friend->getUsername();
-            $formattedArray[$key]["friendsTogether"] =  (in_array($friend, $user->getMyFriends()->toArray()) and in_array($friend, $user->getFriendsWithMe()->toArray())) ? true : false;
+            if (($friendSearch and substr($friend->getUsername(), 0, strlen($friendSearch)) == $friendSearch) or !$friendSearch) {
+
+                $formattedArray[$key]["id"] = $friend->getId();
+                $formattedArray[$key]["username"] = $friend->getUsername();
+                $formattedArray[$key]["friendsTogether"] =  (in_array($friend, $user->getMyFriends()->toArray()) and in_array($friend, $user->getFriendsWithMe()->toArray())) ? true : false;
+            }
 
         }
         $response = new Response($this->serialize($formattedArray), Response::HTTP_OK);
