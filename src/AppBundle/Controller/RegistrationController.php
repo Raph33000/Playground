@@ -53,7 +53,6 @@ class RegistrationController extends BaseController
             $response = new Response($this->serialize('User created.'), Response::HTTP_CREATED);
         }
         else {
-            dump($form->getErrors());die;
             throw new BadRequestHttpException();
         }
 

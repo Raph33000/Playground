@@ -68,6 +68,12 @@ class User extends BaseUser
     private $myFriends;
 
     /**
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="current_room", referencedColumnName="id")
+     */
+    private $current_room;
+
+    /**
      * Get id
      *
      * @return integer
@@ -215,5 +221,29 @@ class User extends BaseUser
     public function getProfilePicture()
     {
         return $this->profilePicture;
+    }
+
+    /**
+     * Set currentRoom
+     *
+     * @param \AppBundle\Entity\User $currentRoom
+     *
+     * @return User
+     */
+    public function setCurrentRoom(\AppBundle\Entity\User $currentRoom = null)
+    {
+        $this->current_room = $currentRoom;
+
+        return $this;
+    }
+
+    /**
+     * Get currentRoom
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getCurrentRoom()
+    {
+        return $this->current_room;
     }
 }
