@@ -21,6 +21,12 @@ services:
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
         exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
+
+    app.form.registration:
+       class: AppBundle\Form\RegistrationType
+       tags:
+           - { name: form.type, alias: app_user_registration }
+
     AppBundle\EventListener\RequestListener:
             tags:
                 - { name: kernel.event_listener, event: kernel.request }

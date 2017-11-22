@@ -36,6 +36,17 @@ class User extends BaseUser
     private $token;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $lastname;
+
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $iosId;
@@ -245,5 +256,53 @@ class User extends BaseUser
     public function getCurrentRoom()
     {
         return $this->current_room;
+    }
+
+    /**
+     * Set firstname
+     *
+     * @param string $firstname
+     *
+     * @return User
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * Get firstname
+     *
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Set lastname
+     *
+     * @param string $lastname
+     *
+     * @return User
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * Get lastname
+     *
+     * @return string
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
     }
 }
