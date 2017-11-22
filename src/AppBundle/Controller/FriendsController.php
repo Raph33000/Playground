@@ -53,6 +53,9 @@ class FriendsController extends FOSRestController
 
                 $formattedArray[$key]["id"] = $friend->getId();
                 $formattedArray[$key]["username"] = $friend->getUsername();
+                $formattedArray[$key]["firstname"] = $friend->getFirstname();
+                $formattedArray[$key]["lastname"] = $friend->getLastname();
+                $formattedArray[$key]["picture"] = $request->getHost() . "/" . $this->getParameter("profile_pictures_directory") . "/". $friend->getProfilePicture();
                 $formattedArray[$key]["friendsTogether"] =  (in_array($friend, $user->getMyFriends()->toArray()) and in_array($friend, $user->getFriendsWithMe()->toArray())) ? true : false;
             }
 
@@ -128,7 +131,10 @@ class FriendsController extends FOSRestController
 
                 $jsonarray[$key]["username"] = $result["username"];
                 $jsonarray[$key]["isFriend"] = $this->isInIdList($friendList, $result["id"]);
-                $jsonarray[$key]["isFriendTogether"] = (in_array($result, $user->getMyFriends()->toArray()) and in_array($result, $user->getFriendsWithMe()->toArray())) ? true : false;
+                $jsonarray[$key]["firstname"] = $result["firstname"];
+                $jsonarray[$key]["lastname"] = $result["lastname"];
+                $jsonarray[$key]["picture"] = $request->getHost() . "/" . $this->getParameter("profile_pictures_directory") . "/". $result["profile_picture"];
+                $jsonarray[$key]["isFriendTogether"] = ($this->isInIdList($friendList, $result["id"]) and $this->isInIdList($user->getFriendsWithMe(), $result["id"])) ? true : false;
             }
         }
 

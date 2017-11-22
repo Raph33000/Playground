@@ -29,6 +29,9 @@ class RequestListener
         return;
         }
         $token = $event->getRequest()->request->get("token");
+        if ($token == null) {
+            return;
+        }
         $user = $this->em->getRepository("AppBundle:User")->findOneByToken($token);
         if ($user == null) {
             return;

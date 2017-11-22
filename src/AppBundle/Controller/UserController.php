@@ -23,6 +23,18 @@ class UserController extends Controller
 
     use \AppBundle\Helper\ControllerHelper;
 
+    private function isInIdList($userlist, $id) {
+
+        foreach ($userlist as $key => $value) {
+
+            if ($value->getId() == $id) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @Route("/upload-picture", name="upload_picture")
      * @Method("POST")
@@ -64,6 +76,36 @@ class UserController extends Controller
         $response = new Response($this->serialize("Picture successfully uploaded."), Response::HTTP_OK);
         return $this->setBaseHeaders($response);
 
+    }
+
+    /**
+     * @Route("/get-user", name="get_user")
+     * @Method("POST")
+     */
+    public function getUserAction(Request $request)
+    {
+
+        $user = $this->getUser();
+        if (!$user) {
+            throw new AccessDeniedException();
+        }
+        $username = $request->request->get("username");
+        if (!$username) {
+
+            throw new BadRequestHttpException("Missing parameters.");
+        }
+        $usr = $this->getDoctrine()->getManager()->getRepository("AppBundle:User")->findOneByUsername($username);
+        if (!$usr) {
+            throw new BadRequestHttpException("User doesn't exist.");
+        }
+        $tosend = array();
+        $tosend["username"] = $usr->getUsername();
+        $tosend["firstname"] = $usr->getFirstname();
+        $tosend["lastname"] = $usr->getLastname();
+        $tosend["isFriendTogether"] = ($this->isInIdList($user->getMyFriends(), $usr->getId()) and $this->isInIdList($user->getFriendsWithMe(), $usr->getid())) ? true : false;
+        $tosend["picture"] = $request->getHost() . "/" . $this->getParameter("profile_pictures_directory") . "/". $usr->getProfilePicture();
+        $response = new Response($this->serialize($tosend), Response::HTTP_OK);
+        return $this->setBaseHeaders($response);
     }
 
 }
